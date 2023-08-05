@@ -32,7 +32,7 @@
   {% endblock header %}
 {% block content %}
 <body>
-    <h1>Order Details</h1>
+    <h1>Product Details</h1>
     <a href="{% url 'manufacturer_list' %}" class="btn btn-primary">Back to items List</a>
     <a href="{% url 'manufacturer_pdf' pk=manufacturer.id %}?download=True" class="btn btn-primary">Download PDF</a>
     <a href="{% url 'edit' manufacturer.pk %}" class="btn btn-primary">Edit</a>
