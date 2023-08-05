@@ -9,7 +9,7 @@ class ManufacturerForm(forms.ModelForm):
         fields = ['item', 'quantity', 'date_of_production', 'sku', 'location']
         widgets = {
             'item': forms.TextInput(attrs={'size':'40', 'class': 'form-control'}),
-            'quantity': forms.TextInput(attrs={'size':'40','class': 'form-control'}),
+            'quantity': forms.NumberInput(attrs={'size':'40','class': 'form-control'}),
             'date_of_production': forms.widgets.DateInput(attrs={'type': 'date'}),
 
             'sku': forms.TextInput(attrs={'size':'40','class': 'form-control'}),

@@ -56,9 +56,9 @@ header li a {
   <img src="https://logos-world.net/wp-content/uploads/2021/08/Home-Depot-Symbol.png ">
    <nav>
        <ul>
-           <li><a class="active" href="{% url 'home' %}">Orders Report</a></li>
-           <li><a href="{% url 'myforms' %}">Create Report</a></li>
-           <li><a href="{% url 'manufacturer_list' %}">View Reports</a></li>
+           <li><a class="active" href="{% url 'home' %}">Inventory Managment</a></li>
+           <li><a href="{% url 'myforms' %}">Add product</a></li>
+           <li><a href="{% url 'manufacturer_list' %}">View Items</a></li>
            <li><a href="{% url 'feedback' %}">Feedback</a></li>
 
            {% if user.is_authenticated %}
