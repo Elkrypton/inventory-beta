@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% block content %}
+{% block header %}
+      <meta charset="utf-8">
+  {% endblock header %}
+
+ <style>
+ table{
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    border-collapse: collapse;
+ }
+ th, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+ }
+ tr:nth-child(even) {
+    background-color: #dddddd;
+ }
+</style>
+<table>
+   <tr>
+               <th>Item</th>
+               <th>Date Created</th>
+               <th>Location</th>
+   </tr>
+               <tr>
+{% for manufacturer in manufacturers %}
+                <td><a href="{% url 'manufacturer_detail' manufacturer.pk %}">{{ manufacturer.order_number }}</a></td>
+                <td>{{ manufacturer.date_added|date:'M d,Y H:i' }}</td>
+                <td>{{ manufacturer.location }}</td>
+                </tr>
+                {% empty %}
+
+                <h2>The list is empty, create a new item/product</2>
+
+{% endfor %}
+
+{% endblock content %}
+
+

@@ -1,0 +1,1 @@
+<QuerySet [{'id': 1, 'name': 'Rochdi el majdoub', 'feedback': 'could you please add the info'}]>

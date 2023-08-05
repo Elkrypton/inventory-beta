@@ -1,0 +1,52 @@
+{% block header %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+<style>
+   table {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    border-collapse: collapse;
+ } 
+ th, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+ }
+ tr:nth-child(even) {
+    background-color: #dddddd;
+ }
+  body {
+    height: 10vh;
+    background-color: white;
+    background-size: cover;
+    font-family: sans-serif;
+    margin-top: 20px;
+    padding: 50px;
+}
+</style>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-tto-fit=no">
+  </head>
+  {% endblock header %}
+{% block content %}
+<body>
+   <h1>Submitted Reports Details</h1>
+
+   <table>
+      <tr>
+         <th>Order</th><th>Details</th>
+      </tr>
+      <tr><td>Parts</td><td>{{ report.parts }}</td></tr>
+      <tr><td>order Date</td><td>{{ report.order_date }}</td></tr>
+      <tr><td>Order Number</td><td>{{ report.order_number }}</td></tr>
+   </table>
+   <br>
+   <br>
+   </body>
+   <img src="data:image/png;base64,{{ qr_code }}" />
+
+
+   {% endblock content %}
+   

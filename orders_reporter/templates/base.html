@@ -1,0 +1,78 @@
+{% csrf_token %}
+<!DOCTYPE html>
+{% load bootstrap3 %}
+<html lang="en">
+<head>
+{% bootstrap_css %}
+  <style>
+
+  header img {
+    height: 80px;
+    margin-left: 40px;
+}
+body {
+    height: 125vh;
+    background-color: white;
+    background-size: cover;
+    font-family: sans-serif;
+    margin-top: 80px;
+    padding: 30px;
+}
+
+main {
+    color: white;
+}
+
+header {
+    background-color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 0 25px 0 black;
+}
+
+header * {
+    display: inline;
+}
+
+header li {
+    margin: 20px;
+}
+
+header li a {
+    color: black;
+    text-decoration: none;
+}
+</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{% endblock %}</title>
+</head>
+<header>
+  <img src="https://logos-world.net/wp-content/uploads/2021/08/Home-Depot-Symbol.png ">
+   <nav>
+       <ul>
+           <li><a class="active" href="{% url 'home' %}">Orders Report</a></li>
+           <li><a href="{% url 'myforms' %}">Create Report</a></li>
+           <li><a href="{% url 'manufacturer_list' %}">View Reports</a></li>
+           <li><a href="{% url 'feedback' %}">Feedback</a></li>
+
+           {% if user.is_authenticated %}
+           <li><a href="{% url 'logout' %}">Logout</a></li>
+           {% else %}
+           <li><a href="{% url 'login' %}">Login</a><li>
+           {% endif %}
+       </ul>
+   </nav>
+</header>
+  <div class="container">
+    {% block content %}
+
+    {% endblock %}
+  </div>
+
+</body>

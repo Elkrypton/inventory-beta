@@ -1,0 +1,61 @@
+{% block header %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+<style>
+   table {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    border-collapse: collapse;
+ }
+ th, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+ }
+ tr:nth-child(even) {
+    background-color: #dddddd;
+ }
+  body {
+    height: 10vh;
+    background-color: white;
+    background-size: cover;
+    font-family: sans-serif;
+    margin-top: 20px;
+    padding: 50px;
+}
+</style>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+  </head>
+  {% endblock header %}
+{% block content %}
+<body>
+    <h1>Order Details</h1>
+    <a href="{% url 'manufacturer_list' %}" class="btn btn-primary">Back to items List</a>
+    <a href="{% url 'manufacturer_pdf' pk=manufacturer.id %}?download=True" class="btn btn-primary">Download PDF</a>
+    <a href="{% url 'edit' manufacturer.pk %}" class="btn btn-primary">Edit</a>
+    <a href="{% url 'delete' manufacturer.pk %}" class="btn btn-danger">Delete</a>
+
+    <br>
+    <br>
+
+      <div class="card-body">
+
+        <table class="table">
+          <tr>
+            <th>Description</th><th>Details</th>
+          </tr>
+        <tr><td>Item/Product</td><td>{{ manufacturer.parts }}</td></tr>
+        <tr><td>Quantity</td><td>{{ manufacturer.order_number }}</td></tr>
+        <tr><td>Date of Production</td><td> {{ manufacturer.order_date }}</td></tr>
+        <tr><td>SKU</td><td>{{ manufacturer.sku }}</td></tr>
+        <tr><td>Location</td><td>{{ manufacturer.location }}</td></tr>
+
+        <br>
+        </table>
+        <img src="data:image/png;base64,{{ qr_code }}" />
+  </body>
+{% endblock content %}
+

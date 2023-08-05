@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% block content %}
+{% block header %}
+      <meta charset="utf-8">
+  {% endblock header %}
+  <ul>
+              {% for manufacturer in manufacturerss %}
+              <h4><b><li><a href="{% url 'manufacturer_detail' manufacturer.pk %}">{{ manufacturer.vendor }}</a></li>
+              </b><p>{{ manufacturer.date_added|date:'M d,Y H:i' }}</p></h4>
+              <h2>The list is empty, create a new item</2>
+              </ul>
+         {% endfor %}
+{% endblock content %}
+

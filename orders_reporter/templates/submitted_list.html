@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% block content %} 
+{% block header %}
+
+<meta charset="utf-8">
+{% endblock header %} 
+<style>
+    table{
+       font-family: Arial, Helvetica, sans-serif;
+       width: 100%;
+       border-collapse: collapse;
+    } 
+    th, th {
+       border: 1px solid #dddddd;
+       text-align: left;
+       padding: 8px;
+    }
+    tr:nth-child(even) {
+       background-color: #dddddd;
+    }
+   </style>
+<table>
+    <tr>
+        <th>Order Number</th>
+        <th>Date Created</th>
+    
+    </tr>
+<tr>
+
+    {% for report in submitted_report %}
+    <td><a href="{% url 'report_detail' report.pk %}">{{ report.order_number }}</a></td>
+    <td>{{ report.date_added|date:'M d,Y H:i' }}</td>
+    </tr>
+    {% empty %} 
+
+    <h3> There are no submitted reports yet!</h3>
+
+    {% endfor %} 
+
+{% endblock content %}
+
+
+

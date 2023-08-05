@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load bootstrap3 %}
+
+
+<head>
+  <meta aria-expanded="true">
+
+    </head>
+    <style>
+      textarea {
+        width: 100%;
+        height: 150px;
+        padding: 12px 20px;
+        box-sizing: border-box;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        background-color: #f8f8f8;
+        font-size: 16px;
+        resize: none;
+      }
+      </style>
+    <body>
+    <form method="post">
+      <div class="container">
+      {{ feedback.as_p }}
+      {% csrf_token %}
+      <button type="submit" class="button button1">Submit</button>
+</div>
+</form>
+    </body>
+
+{% endblock content %}
