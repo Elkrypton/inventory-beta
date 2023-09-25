@@ -1,18 +1,5 @@
-from django.shortcuts import render
-from django.shortcuts import redirect
-from django.shortcuts import HttpResponseRedirect, reverse, HttpResponse
-from django.contrib.auth.decorators import login_required
-import qrcode
-from io import BytesIO
-import base64
-from django.template.loader import get_template
-from django.views import View
-from django.http import FileResponse
-import xhtml2pdf.pisa as pisa
-from .forms import ManufacturerForm
-from .models import Manufacturer
-from .forms import NoteForm
-
+from .modules import *
+from collections import Counter
 # Create your views here.{% for manufacturer in manufacturers %}
 
 
@@ -20,6 +7,53 @@ from .forms import NoteForm
 # def submitted_reports(request):
 #     submitted_report = SubmittedReport.objects.all()
 #     return render(request, 'submitted_list.html', {'submitted_report':submitted_report})
+
+
+class TotalNumoProducts():
+
+    def total_number_of_products(self):
+        manufacturer = Manufacturer.objects.all().values()
+        items_list = []
+        for value in manufacturer:
+            items_list.append(value['item'])
+        
+        to_dict = Counter(items_list)
+        return to_dict
+    
+    def most_frequent_items(self):
+        max = 3
+        items = self.total_number_of_products()
+        for item, count in items.items():
+            if count >= max:
+                return item
+    
+
+    def Graph(self):
+
+        x = []
+        y = []
+        
+        items = self.total_number_of_products()
+        for item, count in items.items():
+            x.append(item)
+            y.append(count)
+        
+        plt.figure()
+        plt.barh(x,y)
+
+        buf = BytesIO()
+        plt.savefig(buf, format='png')
+        buf.seek(0)
+        string = base64.b64encode(buf.read())
+        return string.decode("utf-8")
+
+def GraphView(request):
+
+    graph = TotalNumoProducts().Graph()
+    return render(request, 'graph.html', {'graph': graph})
+        
+
+
 def feedback(request):
     if request.method == 'POST':
         feedback = NoteForm(request.POST)
@@ -134,13 +168,11 @@ def delete_manufacturer(request, pk):
     return redirect(reverse('manufacturer_list'))
 
 
-from django.shortcuts import render, get_object_or_404
-from .models import Manufacturer
 
 @login_required
 def manufacturer_detail(request, pk):
     manufacturer = get_object_or_404(Manufacturer, pk=pk)
-    qr_codes = generate_qr_code("http://cryptoon.pythonanywhere.com/manufacturer/{}".format(pk))
+    qr_codes = generate_qr_code("http://127.0.0.1:8000/manufacturer/{}".format(pk))
 
     #if manufacturer.owner != request.user:
         #raise Http404
