@@ -1,5 +1,6 @@
 import unittest
 from .models import *
+import requests
 
 class TestManufacturer(unittest.TestCase):
 
@@ -18,8 +19,18 @@ class TestManufacturer(unittest.TestCase):
         self.assertEqual(self.data.sku, '1000-000-0000')
         self.assertEqual(self.data.location, 'TEST-12')
 
-if __name__ == '__main__':
-    unittest.main()
+class TestConnection(unittest.TestCase):
+    
+    def setUp(self):
+        self.url = "http://127.0.0.1:8000/myform"
+        self.req = requests.get(self.url)
+    
+
+    def test_home_page(self):
+        self.assertEqual(self.req.status_code, 200)
+    
+if __name__ == "__main__":
+    unittest.main()        
 
 
 

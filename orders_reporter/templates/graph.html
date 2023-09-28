@@ -1,12 +1,19 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% block content %} 
+{% block header %}
 
-{% block content %}
+<meta charset="utf-8">
+{% endblock header %} 
 <html>
 <head>
     <title>Matplotlib Graph</title>
 </head>
 <body>
+    <div class="container">
     {{ plot_div|safe }}
     {{ plot_div_2|safe }}
+    </div>
 
 </body>
 </html>
