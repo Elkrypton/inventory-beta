@@ -8,7 +8,6 @@ from collections import Counter
 #     submitted_report = SubmittedReport.objects.all()
 #     return render(request, 'submitted_list.html', {'submitted_report':submitted_report})
 
-
 class TotalNumoProducts():
 
     def total_number_of_products(self):
@@ -27,30 +26,33 @@ class TotalNumoProducts():
             if count >= max:
                 return item
     
+# views.py
 
-    def Graph(self):
-
-        x = []
-        y = []
-        
-        items = self.total_number_of_products()
-        for item, count in items.items():
-            x.append(item)
-            y.append(count)
-        
-        plt.figure()
-        plt.barh(x,y)
-
-        buf = BytesIO()
-        plt.savefig(buf, format='png')
-        buf.seek(0)
-        string = base64.b64encode(buf.read())
-        return string.decode("utf-8")
+import plotly.graph_objects as go
 
 def GraphView(request):
+    # Generate some example data
+    data = TotalNumoProducts().total_number_of_products()
 
-    graph = TotalNumoProducts().Graph()
-    return render(request, 'graph.html', {'graph': graph})
+    item, count = zip(*data.items())
+    
+
+    # Create a bar chart
+    fig = go.Figure(data=[go.Bar(x=item, y=count)])
+    fig.update_layout(title='Products')
+
+    # Convert the figure to HTML
+    plot_div = fig.to_html(full_html=False)
+
+    context = {'plot_div': plot_div}
+
+    return render(request, 'graph.html', context)
+
+
+# def GraphView(request):
+
+#     graph = TotalNumoProducts().Graph()
+#     return render(request, 'graph.html', {'graph': graph})
         
 
 

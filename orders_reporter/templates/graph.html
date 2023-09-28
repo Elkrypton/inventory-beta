@@ -1,38 +1,13 @@
-{% block header %}
-{% load bootstrap3 %}
-{% bootstrap_css %}
-
-<style>
-    table {
-     font-family: Arial, Helvetica, sans-serif;
-     width: 100%;
-     border-collapse: collapse;
-  }
-  th, th {
-     border: 1px solid #dddddd;
-     text-align: left;
-     padding: 8px;
-  }
-  tr:nth-child(even) {
-     background-color: #dddddd;
-  }
-   body {
-     height: 10vh;
-     background-color: white;
-     background-size: cover;
-     font-family: sans-serif;
-     margin-top: 20px;
-     padding: 50px;
- }
-</style>
+{% block content %}
 <html>
 <head>
     <title>Matplotlib Graph</title>
 </head>
 <body>
-    <img src="data:image/png;base64,{{ graph }}" alt="Matplotlib Graph" class="blog-image">
+    {{ plot_div|safe }}
+
 </body>
 </html>
 
+{% endblock content %}
 
-{% endblock %}
