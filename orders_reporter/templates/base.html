@@ -59,6 +59,7 @@ header li a {
            <li><a class="active" href="{% url 'home' %}">Inventory Managment</a></li>
            <li><a href="{% url 'myforms' %}">Add product</a></li>
            <li><a href="{% url 'manufacturer_list' %}">View Items</a></li>
+           <li><a href="{% url 'graph' %}">Inventory Stats</a></li>
            <li><a href="{% url 'feedback' %}">Feedback</a></li>
 
            {% if user.is_authenticated %}

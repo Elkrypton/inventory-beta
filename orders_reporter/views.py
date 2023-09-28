@@ -1,12 +1,5 @@
 from .modules import *
-from collections import Counter
-# Create your views here.{% for manufacturer in manufacturers %}
 
-
-
-# def submitted_reports(request):
-#     submitted_report = SubmittedReport.objects.all()
-#     return render(request, 'submitted_list.html', {'submitted_report':submitted_report})
 
 class TotalNumoProducts():
 
@@ -21,30 +14,34 @@ class TotalNumoProducts():
     
     def most_frequent_items(self):
         max = 3
+        freq_list = {}
         items = self.total_number_of_products()
         for item, count in items.items():
             if count >= max:
-                return item
+                freq_list[item] = count
+        return freq_list
     
 # views.py
 
-import plotly.graph_objects as go
 
 def GraphView(request):
     # Generate some example data
     data = TotalNumoProducts().total_number_of_products()
-
+    most_frequent = TotalNumoProducts().most_frequent_items()
+    product, freq = zip(*most_frequent.items())
     item, count = zip(*data.items())
     
-
     # Create a bar chart
     fig = go.Figure(data=[go.Bar(x=item, y=count)])
     fig.update_layout(title='Products')
+    fig_2 = go.Figure(data=[go.Bar(x=product, y=freq)])
+    fig_2.update_layout(title="Most Frequent Product")
+    plot_div_2 = fig_2.to_html(full_html=False)
 
     # Convert the figure to HTML
     plot_div = fig.to_html(full_html=False)
 
-    context = {'plot_div': plot_div}
+    context = {'plot_div': plot_div, 'plot_div_2': plot_div_2}
 
     return render(request, 'graph.html', context)
 

@@ -18,7 +18,10 @@ try:
     from django.shortcuts import render, get_object_or_404
     from .models import Manufacturer
     import matplotlib.pyplot as plt
+    import plotly.graph_objects as go
     import matplotlib
+    from .modules import *
+    from collections import Counter
     matplotlib.use('Agg') 
 
 except ImportError as err:
