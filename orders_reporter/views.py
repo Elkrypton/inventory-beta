@@ -5,12 +5,8 @@ class TotalNumoProducts():
 
     def total_number_of_products(self):
         manufacturer = Manufacturer.objects.all().values()
-        items_list = []
-        for value in manufacturer:
-            items_list.append(value['item'])
-        
-        to_dict = Counter(items_list)
-        return to_dict
+        items_list = [value['item'] for value in manufacturer]
+        return dict(Counter(items_list))
     
     def most_frequent_items(self):
         max = 3
@@ -22,28 +18,37 @@ class TotalNumoProducts():
         return freq_list
     
 # views.py
+# views.py
 
 
 def GraphView(request):
-    # Generate some example data
-    data = TotalNumoProducts().total_number_of_products()
-    most_frequent = TotalNumoProducts().most_frequent_items()
-    product, freq = zip(*most_frequent.items())
-    item, count = zip(*data.items())
+    item_counts = TotalNumoProducts().total_number_of_products()
     
-    # Create a bar chart
-    fig = go.Figure(data=[go.Bar(x=item, y=count)])
-    fig.update_layout(title='Products')
-    fig_2 = go.Figure(data=[go.Bar(x=product, y=freq)])
-    fig_2.update_layout(title="Most Frequent Product")
-    plot_div_2 = fig_2.to_html(full_html=False)
+    items = list(item_counts.keys())
+    counts = list(item_counts.values())
 
-    # Convert the figure to HTML
-    plot_div = fig.to_html(full_html=False)
-
-    context = {'plot_div': plot_div, 'plot_div_2': plot_div_2}
-
+    context = {'items': items, 'counts': counts}
     return render(request, 'graph.html', context)
+# def GraphView(request):
+#     # Generate some example data
+#     data = TotalNumoProducts().total_number_of_products()
+#     most_frequent = TotalNumoProducts().most_frequent_items()
+#     product, freq = zip(*most_frequent.items())
+#     item, count = zip(*data.items())
+    
+#     # Create a bar chart
+#     fig = go.Figure(data=[go.Bar(x=item, y=count)])
+#     fig.update_layout(title='Products')
+#     fig_2 = go.Figure(data=[go.Bar(x=product, y=freq)])
+#     fig_2.update_layout(title="Most Frequent Product")
+#     plot_div_2 = fig_2.to_html(full_html=False)
+
+#     # Convert the figure to HTML
+#     plot_div = fig.to_html(full_html=False)
+
+#     context = {'plot_div': plot_div, 'plot_div_2': plot_div_2}
+
+#     return render(request, 'graph.html', context)
 
 
 # def GraphView(request):

@@ -1,22 +1,35 @@
-{% extends "base.html" %}
-{% load bootstrap3 %}
-{% block content %} 
-{% block header %}
+<!-- plot_template.html -->
+{% extends 'base.html' %}
+{% block content %}
+<canvas id="myChart"></canvas>
 
-<meta charset="utf-8">
-{% endblock header %} 
-<html>
-<head>
-    <title>Matplotlib Graph</title>
-</head>
-<body>
-    <div class="container">
-    {{ plot_div|safe }}
-    {{ plot_div_2|safe }}
-    </div>
-
-</body>
-</html>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var items = {{ items|safe }};
+        var counts = {{ counts|safe }};
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: items,
+                datasets: [{
+                    label: 'Product Counts',
+                    data: counts,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
 
 {% endblock content %}
-
