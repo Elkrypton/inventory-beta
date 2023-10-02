@@ -3,9 +3,11 @@ from .modules import *
 
 class TotalNumoProducts():
 
+    def __init__(self):
+        self.manufacturer = Manufacturer.objects.all().values()
+
     def total_number_of_products(self):
-        manufacturer = Manufacturer.objects.all().values()
-        items_list = [value['item'] for value in manufacturer]
+        items_list = [value['item'] for value in self.manufacturer]
         return dict(Counter(items_list))
     
     def most_frequent_items(self):
@@ -17,17 +19,28 @@ class TotalNumoProducts():
                 freq_list[item] = count
         return freq_list
     
+
+    def poduct_quantity(self):
+        quantities = [values['quantity'] for values in self.manufacturer]
+        products = [values['item'] for values in self.manufacturer]
+
+
 # views.py
 # views.py
 
 
 def GraphView(request):
     item_counts = TotalNumoProducts().total_number_of_products()
+    manufacturer = TotalNumoProducts().manufacturer
+
+    products =[values['item'] for values in manufacturer]
+    quantities = [values['quantity'] for values in manufacturer]
+
     
     items = list(item_counts.keys())
     counts = list(item_counts.values())
 
-    context = {'items': items, 'counts': counts}
+    context = {'items': items, 'counts': counts, 'products':products, 'quantities':quantities}
     return render(request, 'graph.html', context)
 # def GraphView(request):
 #     # Generate some example data

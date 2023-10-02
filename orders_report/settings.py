@@ -25,7 +25,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'cg#p$g+j9tax!#a3cup@1$8obt2_+&
 # SECURITY WARNING: don't run with debug turned on in production!
 
 #DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
-ALLOWED_HOSTS = ['cryptoon.pythonanywhere.com', '127.0.0.1']
+ALLOWED_HOSTS = ['cryptoon.pythonanywhere.com', '127.0.0.1', "192.168.1.222"]
 
 
 # Application definition
@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap3',
-    'pytest',
     'orders_reporter',
     'crispy_forms',
     'users',
