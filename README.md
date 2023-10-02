@@ -5,6 +5,11 @@ This is an Inventory Management System built using Python and Django, designed t
 Features
 Product Creation: Add new products to your inventory with ease. Provide essential details such as product name, description, quantity, SKU and location.
 
+What's New?
+
+New Graph visualization feature to visualize your inventory products:
+the graph includes the quantities of the products as well as to the counts of the added products.
+
 QR Code Integration: Each product/item can be assigned a unique QR code. The QR code enables quick identification and retrieval of product details, simplifying inventory management.
 
 Installation
