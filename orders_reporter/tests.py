@@ -22,15 +22,25 @@ class TestManufacturer(unittest.TestCase):
 class TestConnection(unittest.TestCase):
     
     def setUp(self):
-        self.url = "http://127.0.0.1:8000/myform"
-        self.req = requests.get(self.url)
-    
 
+        self.root_url = "http://127.0.0.1:8000"
+        self.req = requests.get(self.root_url)
+        self.list_urls = ['myforms/','list/','graph/','manufacturer/1/']
+    
+    #testing the home page root page
     def test_home_page(self):
         self.assertEqual(self.req.status_code, 200)
+
+
+    #testing all the pages
+    def test_all_pages(self):
+        for url in self.list_urls:
+            self.req = requests.get(self.root_url + '/' + url)
+            self.assertEqual(self.req.status_code, 200)
+
     
 if __name__ == "__main__":
-    unittest.main()        
+    unittest.main(verbosity=2)        
 
 
 

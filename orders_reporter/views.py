@@ -10,14 +10,14 @@ class TotalNumoProducts():
         items_list = [value['item'] for value in self.manufacturer]
         return dict(Counter(items_list))
     
-    def most_frequent_items(self):
-        max = 3
-        freq_list = {}
-        items = self.total_number_of_products()
-        for item, count in items.items():
-            if count >= max:
-                freq_list[item] = count
-        return freq_list
+    # def most_frequent_items(self):
+    #     max = 3
+    #     freq_list = {}
+    #     items = self.total_number_of_products()
+    #     for item, count in items.items():
+    #         if count >= max:
+    #             freq_list[item] = count
+    #     return freq_list
     
 
     def poduct_quantity(self):
