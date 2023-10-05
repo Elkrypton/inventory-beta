@@ -8,20 +8,21 @@
 <canvas id="lineChart2"></canvas>
 <canvas id="lineChart"></canvas>
 <script>
+
     document.addEventListener('DOMContentLoaded', function() {
         var ctx = document.getElementById('lineChart').getContext('2d');
         var items = {{ items|safe }};
         var counts = {{ counts|safe }};
         var myChart = new Chart(ctx, {
-            type: 'line',
+            type: 'bar',
             data: {
                 labels: items,
                 datasets: [{
                     label: 'Product Counts',
                     data: counts,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    backgroundColor: 'rgba(106, 90, 205,1)',
                     borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
+                    borderWidth: 0.5
                 }]
             },
             options: {
