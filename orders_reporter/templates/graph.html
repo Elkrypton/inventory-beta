@@ -14,7 +14,7 @@
         var items = {{ items|safe }};
         var counts = {{ counts|safe }};
         var myChart = new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: {
                 labels: items,
                 datasets: [{
@@ -30,15 +30,29 @@
                     y: {
                         beginAtZero: true
                     }
-                }
+                },
+
+                layout: {
+            padding: {
+                left: 10,  // Adjust as needed
+                right: 10, // Adjust as needed
+                top: 10,   // Adjust as needed
+                bottom: 10 // Adjust as needed
             }
-    });
+            },
+            scales: {
+            x: {
+                barPercentage: 0.2, // Adjust the width of the bars
+                categoryPercentage: 0.6 // Adjust the space between bars
+            }
+        }
+    }});
 
         var crt = document.getElementById('lineChart2').getContext('2d');
         var products = {{ products|safe }};
         var quantities = {{ quantities|safe }};
         var myChart = new Chart(crt, {
-            type: 'line',
+            type: 'bar',
             data: {
                 labels: products,
                 datasets: [{

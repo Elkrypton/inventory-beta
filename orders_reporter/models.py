@@ -15,3 +15,5 @@ class Note(models.Model):
     name = models.CharField(max_length=50)
     feedback = models.TextField(max_length=600)
 
+class SearchProduct(models.Model):
+    query = models.CharField(max_length=100)

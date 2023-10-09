@@ -1,4 +1,6 @@
 from .modules import *
+from .forms import SearchForm
+
 
 
 class TotalNumoProducts():
@@ -27,6 +29,25 @@ class TotalNumoProducts():
 
 # views.py
 # views.py
+def QRCodeScanner(request):
+    return render(request, 'qrcode.html')
+
+
+# views.py
+
+
+def product_search(request):
+    if request.method == 'GET':
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data.get('query')
+            results = Manufacturer.objects.filter(item=query) | Manufacturer.objects.filter(sku=query)
+        else:
+            results = []
+    else:
+        form = SearchForm()
+        results = []
+    return render(request, 'search.html', {'form': form, 'results': results})
 
 
 def GraphView(request):

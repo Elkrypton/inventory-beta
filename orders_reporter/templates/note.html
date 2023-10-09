@@ -4,7 +4,7 @@
 
 
 <head>
-  <meta aria-expanded="true">
+  <meta aria-expanded="false">
 
     </head>
     <style>
@@ -31,7 +31,7 @@
         cursor: pointer;
         transition: background-color 0.3s ease;
       }
-      .button1 {
+      .button1[type="submit"]:hover {
         background-color: #1974D2;
         color: #ffffff;
       }
@@ -42,7 +42,7 @@
       <div class="container">
       {{ feedback.as_p }}
       {% csrf_token %}
-      <button type="submit" class="button button1">Submit</button>
+      <button type="submit" class="button button1">Send</button>
 </div>
 </form>
     </body>

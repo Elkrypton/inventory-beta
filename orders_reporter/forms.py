@@ -1,7 +1,7 @@
 from django import forms
 import pyqrcode
 from django import forms
-from .models import Manufacturer, Note
+from .models import Manufacturer, Note, SearchProduct
 class ManufacturerForm(forms.ModelForm):
 
     class Meta:
@@ -25,3 +25,10 @@ class NoteForm(forms.ModelForm):
         'name':forms.TextInput(attrs={'size':'40', 'class': 'form-control'}),
         'feedback': forms.Textarea()}
 
+
+class SearchForm(forms.ModelForm):
+    class Meta:
+        model = SearchProduct
+        fields = ['query']
+        widgets = {
+        'query':forms.TextInput(attrs={'size':'40', 'class': 'form-control'})}
