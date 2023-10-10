@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load bootstrap3 %}
+
+
+<head>
+  <meta aria-expanded="false">
+
+    </head>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    height: 30vh; /* This ensures the content is centered vertically on the page */
+}
+
+form {
+    text-align: center; /* Center the form contents */
+}
+
+        input[type=text], select, textarea {
+            width: 60%;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: horizontal;
+          }
+
+
+      .button1 {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .button1[type="submit"]:hover {
+        background-color: #1974D2;
+        color: #ffffff;
+      }
+      .button1 {border-radius: 2px;}
+      table{
+        font-family: Arial, Helvetica, sans-serif;
+        width: 100%;
+        border-collapse: collapse;
+     }
+     th, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+     }
+     tr:nth-child(even) {
+        background-color: #dddddd;
+     }
+      </style>
+    <body>
+    <form method="get">
+      <div class="container">
+        <form method="get">
+            <input type="text" name="query" maxlength="100" placeholder="sku or product name">
+              {% csrf_token %}
+      <button type="submit" class="button button1">Search</button>
+</div>
+</form>
+    </body>
+
+
+{% if results %}
+<br>
+    <h4>Search Results:</h4>
+<br>
+<table>
+   <tr>
+               <th>Item</th>
+               <th>Date Created</th>
+               <th>Location</th>
+   </tr>
+
+    {% for manufacturer in results %}
+    <td><a href="{% url 'manufacturer_detail' manufacturer.pk %}">{{ manufacturer.item }}</a></td>
+    <td>{{ manufacturer.date_added|date:'M d,Y H:i' }}</td>
+    <td>{{ manufacturer.location }}</td>
+    </tr>
+    {% empty %}
+    <h2>Nothing Found</2>
+
+{% endfor %}
+
+</body>
+{% endif %}
+{% endblock content %}
