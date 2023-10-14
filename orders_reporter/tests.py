@@ -25,7 +25,7 @@ class TestConnection(unittest.TestCase):
 
         self.root_url = "http://127.0.0.1:8000"
         self.req = requests.get(self.root_url)
-        self.list_urls = ['myforms/','list/','graph/','manufacturer/1/','search/']
+        self.list_urls = ['myforms/','list/','graph/','manufacturer/1/','search/','edit_manufacturer/1/']
     
     #testing the home page root page
     def test_home_page(self):

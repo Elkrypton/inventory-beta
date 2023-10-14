@@ -1,6 +1,7 @@
 from .modules import *
 from .forms import SearchForm
-
+import string
+import random
 
 
 class TotalNumoProducts():
@@ -11,16 +12,6 @@ class TotalNumoProducts():
     def total_number_of_products(self):
         items_list = [value['item'] for value in self.manufacturer]
         return dict(Counter(items_list))
-    
-    # def most_frequent_items(self):
-    #     max = 3
-    #     freq_list = {}
-    #     items = self.total_number_of_products()
-    #     for item, count in items.items():
-    #         if count >= max:
-    #             freq_list[item] = count
-    #     return freq_list
-    
 
     def poduct_quantity(self):
         quantities = [values['quantity'] for values in self.manufacturer]
@@ -35,6 +26,7 @@ def QRCodeScanner(request):
 
 # views.py
 
+    
 
 def product_search(request):
     if request.method == 'GET':
@@ -110,9 +102,9 @@ def feedback(request):
 
 def generate_qr_code(data):
     qr = qrcode.QRCode(
-        version=1,
+        version=2,
         error_correction=qrcode.constants.ERROR_CORRECT_L,
-        box_size=7,
+        box_size=6,
         border=2,
     )
     qr.add_data(data)

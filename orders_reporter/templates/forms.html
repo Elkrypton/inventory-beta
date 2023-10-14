@@ -1,75 +1,136 @@
 {% extends "base.html" %}
+
 {% block content %}
 
 <style>
-  .button1 {
-    display: inline-block;
+  body {
+    font-family: Arial, sans-serif;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+
+  select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+
+  .btn-submit {
     padding: 10px 20px;
     font-size: 16px;
     font-weight: bold;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 8px;
     border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
-  .button1[type="submit"]:hover {
-    background-color: #1974D2;
-    color: #ffffff;
+
+  .btn-submit:hover {
+    background-color: #0056b3;
   }
-  .button1 {border-radius: 2px;}
 
-    * {
-      box-sizing: border-box;
+  .generated-sku {
+    font-size: 16px;
+    font-weight: bold;
+    color: #28a745;
+  }
+</style>
+
+<div class="container mt-5">
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="item">Item:</label>
+      {{ form.item }}
+    </div>
+
+    <div class="form-group">
+      <label for="quantity">Quantity:</label>
+      {{ form.quantity }}
+    </div>
+
+    <div class="form-group">
+      <label for="date_of_production">Date of Production:</label>
+      {{ form.date_of_production }}
+    </div>
+
+    <div class="form-group">
+      <label for="sku">SKU:</label>
+      {{ form.sku }}
+      {{ form.sku_gen }}
+      <div id="generated-sku" class="generated-sku"></div>
+    </div>
+
+    <div class="form-group">
+      <label for="location">Location:</label>
+      {{ form.location }}
+    </div>
+
+    <button type="submit" class="btn btn-submit">Submit</button>
+  </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  function generateSKU() {
+    var randomSKU = Math.floor(Math.random() * 9000) + 1000 + '-' +
+                    Math.floor(Math.random() * 1000) + '-' +
+                    Math.floor(Math.random() * 10000);
+    return randomSKU;
+  }
+
+  function updateSKUField() {
+    var skuGenRadio = document.querySelector('input[name="sku_gen"]:checked');
+    var skuField = document.getElementById('id_sku');
+    var generatedSKUElement = document.getElementById('generated-sku');
+    if (skuGenRadio && skuGenRadio.value === 'auto') {
+      var generatedSKU = generateSKU();
+      skuField.value = generatedSKU;
+      generatedSKUElement.textContent = 'Generated SKU: ' + generatedSKU;
+    } else {
+      skuField.value = '';
+      generatedSKUElement.textContent = '';
     }
+  }
 
-    input[type=text], select, textarea {
-      width: 60%;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      resize: horizontal;
-    }
+  var skuGenRadios = document.querySelectorAll('input[name="sku_gen"]');
+  skuGenRadios.forEach(function(radio) {
+    radio.addEventListener('change', updateSKUField);
+  });
 
-
-
-    input[type=number], select, textarea {
-      width: 60%;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      resize: horizontal;
-    }
-
-
-    .col-25 {
-      float: left;
-      width: 25%;
-      margin-top: 6px;
-    }
-
-    .col-75 {
-      float: left;
-      width: 75%;
-      margin-top: 6px;
-    }
-
-    /* Clear floats after the columns */
-    .row:after {
-      content: "";
-      clear: both;
-    }
-  </style>
-  <body>
-
-    <form method="post">
-    <div class="container">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" class="button button1">Submit</button>
-    </form>
-  </div>
+  updateSKUField();
+});
+</script>
 
 {% endblock content %}
-

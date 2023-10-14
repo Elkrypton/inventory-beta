@@ -3,11 +3,12 @@ import pyqrcode
 # Create your models here.
 from django.db import models
 
+
 class Manufacturer(models.Model):
     item = models.CharField(max_length=50)
     quantity = models.IntegerField()
     date_of_production = models.DateTimeField()
-    sku = models.CharField(max_length=50)
+    sku = models.CharField(max_length=50, unique=True)
     date_added = models.DateTimeField(auto_now=True)
     location = models.CharField(max_length=50)
 
