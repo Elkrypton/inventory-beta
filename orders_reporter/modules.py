@@ -6,8 +6,11 @@ try:
     from django.shortcuts import HttpResponseRedirect, reverse, HttpResponse
     from django.contrib.auth.decorators import login_required
     import qrcode
+    from .forms import SearchForm
     from io import BytesIO
     import base64
+    import random
+    import string
     from django.template.loader import get_template
     from django.views import View
     from django.http import FileResponse
@@ -22,7 +25,8 @@ try:
     import matplotlib
     from .modules import *
     from collections import Counter
-    matplotlib.use('Agg') 
+    from django.contrib.auth.decorators import permission_required
+
 
 except ImportError as err:
     print("----IMPORT ERROR --->\n---> {}".format(err))

@@ -1,10 +1,8 @@
+#importing all modules from one file
 from .modules import *
-from .forms import SearchForm
-import string
-import random
-
 
 class TotalNumoProducts():
+    """Total number of products"""
 
     def __init__(self):
         self.manufacturer = Manufacturer.objects.all().values()
@@ -12,33 +10,56 @@ class TotalNumoProducts():
     def total_number_of_products(self):
         items_list = [value['item'] for value in self.manufacturer]
         return dict(Counter(items_list))
+    
+    def __str__(self):
+        return "Class includes all products counts and quantity for each"
 
-    def poduct_quantity(self):
-        quantities = [values['quantity'] for values in self.manufacturer]
-        products = [values['item'] for values in self.manufacturer]
+class GeneratePDF(View):
+    """Class to generate PDF from web page"""
 
+    def get(self, request, *args, **kwargs):
 
-# views.py
-# views.py
+        template = get_template('manufacturer_detail.html')
+        manufacturer = get_object_or_404(Manufacturer, pk=kwargs['pk'])
+        context = {
+            'manufacturer':manufacturer
+        }
+
+        pdf = render_to_pdf('manufacturer_detail.html', context)
+        if pdf:
+
+            response = HttpResponse(pdf, content_type='application/pdf')
+            filename = "Manufacturer_{}.pdf".format(manufacturer.id)
+            content = "inline; filename={}".format(filename)
+            download= request.GET.get("download")
+            if download:
+                content = "attachment; filename={}".format(filename)
+            response['Content-Disposition'] = content
+            return response
+        
+        return HttpResponse("Not Found")
+
 def QRCodeScanner(request):
+
     return render(request, 'qrcode.html')
 
-
-# views.py
-
-    
-
 def product_search(request):
+
     if request.method == 'GET':
         form = SearchForm(request.GET)
         if form.is_valid():
+
             query = form.cleaned_data.get('query')
             results = Manufacturer.objects.filter(item=query) | Manufacturer.objects.filter(sku=query)
         else:
+
             results = []
+
     else:
+
         form = SearchForm()
         results = []
+        
     return render(request, 'search.html', {'form': form, 'results': results})
 
 
@@ -55,33 +76,6 @@ def GraphView(request):
 
     context = {'items': items, 'counts': counts, 'products':products, 'quantities':quantities}
     return render(request, 'graph.html', context)
-# def GraphView(request):
-#     # Generate some example data
-#     data = TotalNumoProducts().total_number_of_products()
-#     most_frequent = TotalNumoProducts().most_frequent_items()
-#     product, freq = zip(*most_frequent.items())
-#     item, count = zip(*data.items())
-    
-#     # Create a bar chart
-#     fig = go.Figure(data=[go.Bar(x=item, y=count)])
-#     fig.update_layout(title='Products')
-#     fig_2 = go.Figure(data=[go.Bar(x=product, y=freq)])
-#     fig_2.update_layout(title="Most Frequent Product")
-#     plot_div_2 = fig_2.to_html(full_html=False)
-
-#     # Convert the figure to HTML
-#     plot_div = fig.to_html(full_html=False)
-
-#     context = {'plot_div': plot_div, 'plot_div_2': plot_div_2}
-
-#     return render(request, 'graph.html', context)
-
-
-# def GraphView(request):
-
-#     graph = TotalNumoProducts().Graph()
-#     return render(request, 'graph.html', {'graph': graph})
-        
 
 
 def feedback(request):
@@ -116,6 +110,7 @@ def generate_qr_code(data):
     return base64.b64encode(buffer.getvalue()).decode()
 
 
+@permission_required('manufacturer_edit', raise_exception=True)
 def manufacturer_edit(request, pk):
     manufacturer = Manufacturer.objects.get(pk=pk)
     if request.method != 'POST':
@@ -130,25 +125,7 @@ def manufacturer_edit(request, pk):
     context = {'manufacturer':manufacturer, 'form':form}
     return render(request,'manufacturer_edit.html', context)
 
-class GeneratePDF(View):
-    def get(self, request, *args, **kwargs):
-        template = get_template('manufacturer_detail.html')
-        manufacturer = get_object_or_404(Manufacturer, pk=kwargs['pk'])
-        context = {
-            'manufacturer':manufacturer
-        }
 
-        pdf = render_to_pdf('manufacturer_detail.html', context)
-        if pdf:
-            response = HttpResponse(pdf, content_type='application/pdf')
-            filename = "Manufacturer_{}.pdf".format(manufacturer.id)
-            content = "inline; filename={}".format(filename)
-            download= request.GET.get("download")
-            if download:
-                content = "attachment; filename={}".format(filename)
-            response['Content-Disposition'] = content
-            return response
-        return HttpResponse("Not Found")
 
 @login_required
 def index(request):
@@ -164,7 +141,9 @@ def render_to_pdf(template_src, context_dict={}):
         return HttpResponse(result.getvalue(),content_type='application/pdf')
     return None
 
+
 @login_required
+@permission_required('my_form_view',raise_exception=True)
 def my_form_view(request):
     if request.method == 'POST':
         form = ManufacturerForm(request.POST)
@@ -186,14 +165,15 @@ def success_page(request):
 
 @login_required
 def manufacturer_list(request):
+
     manufacturers = Manufacturer.objects.all()
     return render(request, 'manufacturer_list.html', {'manufacturers': manufacturers})
 
 
+@permission_required('delete_manufacturer', raise_exception=True)
 def delete_manufacturer(request, pk):
+
     manufacturer = Manufacturer.objects.get(pk=pk)
-    #if manufacturer.owner != request.user:
-        #raise Http404
     manufacturer.delete()
     return redirect(reverse('manufacturer_list'))
 
@@ -201,18 +181,7 @@ def delete_manufacturer(request, pk):
 
 @login_required
 def manufacturer_detail(request, pk):
+
     manufacturer = get_object_or_404(Manufacturer, pk=pk)
     qr_codes = generate_qr_code("http://127.0.0.1:8000/manufacturer/{}".format(pk))
-
-    #if manufacturer.owner != request.user:
-        #raise Http404
-    #qr_code = generate_qr_code(f"Manufacturer {pk}")
     return render(request, "manufacturer_detail.html", {"manufacturer": manufacturer, "qr_code": qr_codes})
-
-
-
-# def report_detail(request,pk):
-
-#     report = get_object_or_404(SubmittedReport, pk=pk)
-#     qr_code = generate_qr_code("http://cryptoon.pythonanywhere.com/order_detail/{}".format(pk))
-#     return render(request, 'submitted_report.html',{'report':report,"qr_code":qr_code})
