@@ -19,13 +19,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'barcodes')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-DEBUG=False
+DEBUG = True
 #SECRET_KEY = 'django-insecure-#g7g_g)fi6$b7aa4kufn$#@_oowvmugn@o#-q5)wd4q0g2kg#m'
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'cg#p$g+j9tax!#a3cup@1$8obt2_+&k3q+pmu)5%asj6yjpkag')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY',
+                            'cg#p$g+j9tax!#a3cup@1$8obt2_+&k3q+pmu)5%asj6yjpkag')
 # SECURITY WARNING: don't run with debug turned on in production!
 
 #DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
-ALLOWED_HOSTS = ['cryptoon.pythonanywhere.com', '127.0.0.1', "192.168.1.222"]
+ALLOWED_HOSTS = ['cryptoon.pythonanywhere.com', '127.0.0.1', "192.168.1.152"]
 
 
 # Application definition
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap3',
+    'bootstrap4',
     'orders_reporter',
     'crispy_forms',
     'users',
@@ -83,10 +85,7 @@ TEMPLATES = [
     #STATIC ASSET CONFIGURATIO
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = 'staticfiles'
-STATICFILES_DIRS = (
-            os.path.join(BASE_DIR, 'static'),
-
-            )
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 WSGI_APPLICATION = 'orders_report.wsgi.application'
 

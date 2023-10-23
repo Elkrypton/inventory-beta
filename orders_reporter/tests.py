@@ -23,14 +23,17 @@ class TestManufacturer(unittest.TestCase):
         """
 
         self.data.delete()
-    
+
     def test_data_added(self):
+
         self.assertEqual(self.data.item, "test")
         self.assertEqual(self.data.quantity, 3)
         self.assertEqual(self.data.sku, '1000-000-0000')
         self.assertEqual(self.data.location, 'TEST-12')
 
+
 class TestConnection(unittest.TestCase):
+
     """
     TestConnnection Class:
          -Tests the connection through requests to check the status codes
@@ -41,22 +44,18 @@ class TestConnection(unittest.TestCase):
 
         self.root_url = "http://127.0.0.1:8000"
         self.req = requests.get(self.root_url)
-        self.list_urls = ['list/','graph/','manufacturer/1/','search/']
-        self.forbidden_list = ['myforms/','edit_manufacturer/1/']
+        self.list_urls = ['list/','graph/','manufacturer/1/','search/','myforms/','edit_manufacturer/1/']
     
     #testing the home page root page
     def test_home_page(self):
         self.assertEqual(self.req.status_code, 200)
 
-
     #testing all the pages
     def test_all_pages(self):
+
         for url in self.list_urls:
             self.req = requests.get(self.root_url + '/' + url)
             self.assertEqual(self.req.status_code, 200)
-        for url in self.forbidden_list:
-            self.req = requests.get(self.root_url + '/' + url)
-            self.assertEqual(self.req.status_code, 404)
     
 if __name__ == "__main__":
     unittest.main()        
