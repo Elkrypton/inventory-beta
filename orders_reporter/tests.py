@@ -1,9 +1,12 @@
 import unittest
 from .models import *
 import requests
+
 try:
     from selenium import webdriver
     from selenium.webdriver.support.ui import WebDriverWait
+    from selenium.webdriver.common.by import By
+
 except ImportError as err:
     print("[!] Please check the following error log:\n=>:{}".format(str(err)))
 
@@ -68,7 +71,12 @@ class TestConnection(unittest.TestCase):
 def test_login():
     username = "rochdi"
     password = "hardtoguess123"
-    password_list = ["hardtog", "rochdi123","HARDTOGUESS123","hardtoguess123"]
+
+    item = "selenium"
+    quantity= 12
+    date_of_production = "12/12/2022"
+    sku = "1001-000-00001"
+    location = "SEL-A1"
 
     driver = webdriver.Chrome()
 
@@ -79,9 +87,10 @@ def test_login():
 
     driver.find_element('id','login_btn').click()
 
-    WebDriverWait(driver=driver, timeout=10).until(
-    lambda x: x.execute_script("return document.readyState === 'complete'"))
-
+    WebDriverWait(driver=driver, timeout=15).until(
+        lambda x: x.execute_script("return document.readyState == 'complete'"))
+    
+   
     error_message = "correct username and password"
 
     errors = driver.find_elements("css selector",".errorlist.nonfield")
@@ -93,6 +102,19 @@ def test_login():
         print("Login Failed")
     else:
         print("Login was successful")
+    
+    driver.find_element(By.ID, "id_form").click()
+    driver.find_element(By.ID,"id_item").send_keys(item)
+    driver.find_element(By.ID,"id_quantity").send_keys(quantity)
+    driver.find_element(By.ID,"id_date_of_production").send_keys(date_of_production)   
+    driver.find_element(By.ID,"id_sku").send_keys(sku)
+    driver.find_element(By.ID,"id_location").send_keys(location)
+    driver.find_element(By.ID,"btn_add").click()
+    
+    WebDriverWait(driver=driver, timeout=15).until(
+        lambda x: x.execute_script("return document.readyState == 'complete'"))
+    
+    print("---data was added ----")
 
 
 test_login()
