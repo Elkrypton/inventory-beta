@@ -1,6 +1,11 @@
 import unittest
 from .models import *
 import requests
+try:
+    from selenium import webdriver
+    from selenium.webdriver.support.ui import WebDriverWait
+except ImportError as err:
+    print("[!] Please check the following error log:\n=>:{}".format(str(err)))
 
 class TestManufacturer(unittest.TestCase):
     """Manufacturer test class to test models's acceptance of new data"""
@@ -19,7 +24,8 @@ class TestManufacturer(unittest.TestCase):
     def tearDown(self):
 
         """
-        Delete all added data through  Setup method and other test methods.
+        Delete all added data through  Setup method and other test me
+        thods.
         """
 
         self.data.delete()
@@ -56,9 +62,44 @@ class TestConnection(unittest.TestCase):
         for url in self.list_urls:
             self.req = requests.get(self.root_url + '/' + url)
             self.assertEqual(self.req.status_code, 200)
-    
+
+
+
+def test_login():
+    username = "rochdi"
+    password = "hardtoguess123"
+    password_list = ["hardtog", "rochdi123","HARDTOGUESS123","hardtoguess123"]
+
+    driver = webdriver.Chrome()
+
+    driver.get("http://127.0.0.1:8000/")
+
+    driver.find_element("id", "id_username").send_keys(username)
+    driver.find_element("id","id_password").send_keys(password)
+
+    driver.find_element('id','login_btn').click()
+
+    WebDriverWait(driver=driver, timeout=10).until(
+    lambda x: x.execute_script("return document.readyState === 'complete'"))
+
+    error_message = "correct username and password"
+
+    errors = driver.find_elements("css selector",".errorlist.nonfield")
+
+    for e in errors:
+        print(e.text)
+
+    if any(error_message in e.text for e in errors):
+        print("Login Failed")
+    else:
+        print("Login was successful")
+
+
+test_login()
+print("=====TESTING USING UNITTEST")
 if __name__ == "__main__":
-    unittest.main()        
+
+    unittest.main(warnings='ignore')
 
 
 

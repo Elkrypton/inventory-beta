@@ -6,6 +6,7 @@ from .views import *
 
 urlpatterns = [
     path('', index, name='home'),
+    path('graph/', GraphView,name='graph'),
     path('myforms/', my_form_view, name='myforms'),
     path('list/',manufacturer_list, name='manufacturer_list'),
     path('manufacturer/<int:pk>/pdf/', GeneratePDF.as_view(), name="manufacturer_pdf"),
@@ -13,7 +14,6 @@ urlpatterns = [
     path('manufacturer/<int:pk>/', manufacturer_detail, name='manufacturer_detail'),
     path('scan/',qrcode_scanner, name='scan'),
     path('search/',product_search, name="search"),
-    path('graph/', GraphView, name='graph'),
-    path('feedback/',feedback,name="feedback"),
+    path('feedback/',feedback, name="feedback"),
     path('submitted/', success_page, name="success_page"),
     path('edit_manufacturer/<int:pk>/', manufacturer_edit,name="edit")]
