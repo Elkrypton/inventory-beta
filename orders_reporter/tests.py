@@ -47,7 +47,7 @@ class TestConnection(unittest.TestCase):
     TestConnnection Class:
          -Tests the connection through requests to check the status codes
          -Tests that the pages are accessible.
-.    """
+    """
     
     def setUp(self):
 
@@ -66,62 +66,80 @@ class TestConnection(unittest.TestCase):
             self.req = requests.get(self.root_url + '/' + url)
             self.assertEqual(self.req.status_code, 200)
 
+class SeleniumTest(unittest.TestCase):
 
+    def __init__(self):
+        self.driver = webdriver.Chrome()
+        self.test_login()
+        #self.add_data()
+        self.get_data()
 
-def test_login():
-    username = "rochdi"
-    password = "hardtoguess123"
+    def test_login(self):
+        username = "rochdi"
+        password = "hardtoguess123"
 
-    item = "selenium"
-    quantity= 12
-    date_of_production = "12/12/2022"
-    sku = "1001-000-00001"
-    location = "SEL-A1"
+        self.driver = webdriver.Chrome()
 
-    driver = webdriver.Chrome()
+        self.driver.get("http://127.0.0.1:8000/")
 
-    driver.get("http://127.0.0.1:8000/")
+        self.driver.find_element("id", "id_username").send_keys(username)
+        self.driver.find_element("id","id_password").send_keys(password)
 
-    driver.find_element("id", "id_username").send_keys(username)
-    driver.find_element("id","id_password").send_keys(password)
+        self.driver.find_element('id','login_btn').click()
 
-    driver.find_element('id','login_btn').click()
-
-    WebDriverWait(driver=driver, timeout=15).until(
-        lambda x: x.execute_script("return document.readyState == 'complete'"))
+        WebDriverWait(driver=self.driver, timeout=15).until(
+            lambda x: x.execute_script("return document.readyState == 'complete'"))
+        
     
-   
-    error_message = "correct username and password"
+        error_message = "correct username and password"
 
-    errors = driver.find_elements("css selector",".errorlist.nonfield")
+        errors = self.driver.find_elements("css selector",".errorlist.nonfield")
 
-    for e in errors:
-        print(e.text)
+        for e in errors:
+            print(e.text)
 
-    if any(error_message in e.text for e in errors):
-        print("Login Failed")
-    else:
-        print("Login was successful")
+        if any(error_message in e.text for e in errors):
+            print("Login Failed")
+        else:
+            print("Login was successful")
     
-    driver.find_element(By.ID, "id_form").click()
-    driver.find_element(By.ID,"id_item").send_keys(item)
-    driver.find_element(By.ID,"id_quantity").send_keys(quantity)
-    driver.find_element(By.ID,"id_date_of_production").send_keys(date_of_production)   
-    driver.find_element(By.ID,"id_sku").send_keys(sku)
-    driver.find_element(By.ID,"id_location").send_keys(location)
-    driver.find_element(By.ID,"btn_add").click()
-    
-    WebDriverWait(driver=driver, timeout=15).until(
-        lambda x: x.execute_script("return document.readyState == 'complete'"))
-    
-    print("---data was added ----")
+    def add_data(self):
 
+        item = "selenium"
+        quantity= 12
+        date_of_production = "12-12-2022"
+        sku = "1001-000-00001"
+        location = "SEL-A1"
 
-test_login()
-print("=====TESTING USING UNITTEST")
-if __name__ == "__main__":
+        self.driver.find_element(By.ID, "id_form").click()
+        self.driver.find_element(By.ID,"id_item").send_keys(item)
+        self.driver.find_element(By.ID,"id_quantity").send_keys(quantity)
+        self.driver.find_element(By.ID,"id_date_of_production").send_keys(date_of_production)   
+        self.driver.find_element(By.ID,"id_sku").send_keys(sku)
+        self.driver.find_element(By.ID,"id_location").send_keys(location)
+        self.driver.find_element(By.ID,"btn_add").click()
+        
+        WebDriverWait(driver=self.driver, timeout=15).until(
+            lambda x: x.execute_script("return document.readyState == 'complete'"))
+        
+        print("---data was added ----")
+        self.driver.close()
+        
+    def test_get_data(self):
+        self.driver.find_element("name","items_list").click()
+        self.driver.find_element("name","manufacturer").click()
+        data = self.driver.find_element("name","product_details")
+        if data:
+            print("====WE WERE ABLE TO RETRIEVE DATA===")
+            print(data.text)
 
-    unittest.main(warnings='ignore')
+        
+        self.assertIn("SKU", data.text)
+        print("====> TEST PASSED")
+        self.driver.close()
+
+SeleniumTest()
+
 
 
 
