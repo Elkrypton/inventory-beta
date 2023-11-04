@@ -1,5 +1,6 @@
-{% csrf_token %}
 <!DOCTYPE html>
+
+{% csrf_token %}
 {% load bootstrap3 %}
 <html lang="en">
 <head>
@@ -57,7 +58,7 @@ header li a {
        <ul>
            <li><a class="active" href="{% url 'home' %}">Inventory Managment</a></li>
            <li><a id="id_form" href="{% url 'myforms' %}">Add product</a></li>
-           <li><a id="id_items"  href="{% url 'manufacturer_list' %}">View Items</a></li>
+           <li><a name="items_list"  href="{% url 'manufacturer_list' %}">View Items</a></li>
            <li><a id="id_stats" href="{% url 'graph' %}">Inventory Stats</a></li>
            <li><a id ="id_search" href="{% url 'search' %}">Search</a></li>
 

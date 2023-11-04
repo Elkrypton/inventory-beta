@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+
 {% extends "base.html" %}
 {% load bootstrap3 %}
 {% block content %}
@@ -37,7 +39,7 @@
    </tr>
                <tr>
 {% for manufacturer in manufacturers %}
-                <td><a href="{% url 'manufacturer_detail' manufacturer.pk %}">{{ manufacturer.item }}</a></td>
+                <td><a name="manufacturer" href="{% url 'manufacturer_detail' manufacturer.pk %}">{{ manufacturer.item }}</a></td>
                 <td>{{ manufacturer.date_added|date:'M d,Y H:i' }}</td>
                 <td>{{ manufacturer.location }}</td>
                 </tr>

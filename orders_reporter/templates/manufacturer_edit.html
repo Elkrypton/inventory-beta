@@ -1,87 +1,126 @@
+<!DOCTYPE html>
+
 {% extends "base.html" %}
-{% block header %}
-<head>
-	<style>
-		.button {
-		  background-color: #FF5F1F; /* Orange */
-		  border: none;
-		  color: white;
-		  padding: 20px;
-		  text-align: center;
-		  text-decoration: none;
-		  display: inline-block;
-		  font-size: 14px;
-		  margin: 4px 2px;
-		  cursor: pointer;
-		}
-		.button1 {border-radius: 2px;}
+{% block content %}
+{% csrf_token %}
 
-		* {
-		  box-sizing: border-box;
-		}
 
-		input[type=text], select, textarea {
-		  width: 60%;
-		  padding: 12px;
-		  border: 1px solid #ccc;
-		  border-radius: 4px;
-		  resize: vertical;
-		}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  .form-group {
+    margin-bottom: 20px;
+  }
 
-		label {
-		  padding: 12px 12px 12px 0;
-		  display: inline-block;
-		}
+  label {
+    font-weight: bold;
+  }
 
-		input[type=submit] {
-		  background-color: #04AA6D;
-		  color: white;
-		  padding: 12px 20px;
-		  border: none;
-		  border-radius: 4px;
-		  cursor: pointer;
-		  float: right;
-		}
+  input[type="text"],
+  input[type="number"],
+  input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
 
-		input[type=submit]:hover {
-		  background-color: #45a049;
-		}
+  select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
 
-		.container {
-		  border-radius: 5px;
-		  background-color: #f2f2f2;
-		  padding: 20px;
-		}
+  .btn-submit {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
 
-		.col-25 {
-		  float: left;
-		  width: 25%;
-		  margin-top: 6px;
-		}
+  .btn-submit:hover {
+    background-color: #0056b3;
+  }
 
-		.col-75 {
-		  float: left;
-		  width: 75%;
-		  margin-top: 6px;
-		}
+  .generated-sku {
+    font-size: 16px;
+    font-weight: bold;
+    color: #28a745;
+  }
+</style>
 
-		/* Clear floats after the columns */
-		.row:after {
-		  content: "";
-		  clear: both;
-		}
-	  </style>
-	  <head>
-<h2>
-	{% endblock header %}
-	{% block content %}
-	<p>
-	<!--<a href="{% url 'manufacturer_detail' manufacturer.pk %}">{{ manufacturer }}</a>-->
-	<form action="{% url 'edit' manufacturer.pk %}" method='post'>
-		{% csrf_token %}
-		{{ form.as_p }}
+<div class="container mt-5">
+<form action="{% url 'edit' manufacturer.pk %}" method='post'>
+	{% csrf_token %}
+    <div class="form-group">
+      <label for="item">Item:</label>
+      {{ form.item }}
+    </div>
 
-	<button name="submit" class="btn btn-primary">Save Changes</button>
-	</form>
-</p>
-	{% endblock content %}
+    <div class="form-group">
+      <label for="quantity">Quantity:</label>
+      {{ form.quantity }}
+    </div>
+
+    <div class="form-group">
+      <label for="date_of_production">Date of Pro duction:</label>
+      {{ form.date_of_production }}
+    </div>
+
+    <div class="form-group">
+      <label for="sku">SKU:</label>
+      {{ form.sku }}
+      {{ form.sku_gen }}
+      <div id="generated-sku" class="generated-sku"></div>
+    </div>
+
+    <div class="form-group">
+      <label for="location">Location:</label>
+      {{ form.location }}
+    </div>
+
+    <button type="submit" id="btn_add" class="btn btn-submit">Submit</button>
+  </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  function generateSKU() {
+    var randomSKU = Math.floor(Math.random() * 9000) + 1000 + '-' +
+                    Math.floor(Math.random() * 1000) + '-' +
+                    Math.floor(Math.random() * 10000);
+    return randomSKU;
+  }
+
+  function updateSKUField() {
+    var skuGenRadio = document.querySelector('input[name="sku_gen"]:checked');
+    var skuField = document.getElementById('id_sku');
+    var generatedSKUElement = document.getElementById('generated-sku');
+    if (skuGenRadio && skuGenRadio.value === 'auto') {
+      var generatedSKU = generateSKU();
+      skuField.value = generatedSKU;
+      generatedSKUElement.textContent = 'Generated SKU: ' + generatedSKU;
+    }
+  }
+
+  var skuGenRadios = document.querySelectorAll('input[name="sku_gen"]');
+  skuGenRadios.forEach(function(radio) {
+    radio.addEventListener('change', updateSKUField);
+  });
+
+  updateSKUField();
+});
+</script>
+
+{% endblock content %}

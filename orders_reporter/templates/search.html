@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+
 {% extends 'base.html' %}
 {% block content %}
 {% load bootstrap3 %}
@@ -67,14 +69,14 @@ form {
         <form method="get">
             <input type="text" name="query" maxlength="100" placeholder="sku or product name",value="this is a test">
               {% csrf_token %}
-      <button type="submit" class="button button1">Search</button>
+      <button type="submit" id="id_search" class="button button1">Search</button>
 </div>
 </form>
     </body>
 
-
 {% if results %}
 <br>
+<div id="id_results">
     <h4>Search Results:</h4>
 <br>
 <table>
@@ -91,7 +93,7 @@ form {
     </tr>
     {% empty %}
     <h2>Nothing Found</2>
-
+    </div>
 {% endfor %}
 
 </body>
